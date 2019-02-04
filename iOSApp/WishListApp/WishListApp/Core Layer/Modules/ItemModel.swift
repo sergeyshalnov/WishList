@@ -11,11 +11,12 @@ import Foundation
 
 struct ItemModel: Codable {
     
+    let id: Int
     let name: String
     let comment: String
     let cost: Int
     let url: String
-    
+
 }
 
 struct WishlistResponseModel: Codable {

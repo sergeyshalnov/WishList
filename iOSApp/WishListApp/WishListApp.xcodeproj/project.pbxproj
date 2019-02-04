@@ -31,6 +31,10 @@
 		1A4DD3652207DB55000E6010 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4DD3642207DB55000E6010 /* Request.swift */; };
 		1A4DD3672207E526000E6010 /* ServiceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4DD3662207E526000E6010 /* ServiceAssembly.swift */; };
 		1A4DD3692207E533000E6010 /* CoreAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4DD3682207E533000E6010 /* CoreAssembly.swift */; };
+		1A6188E7220874210007BD3B /* IDeleteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6188E6220874210007BD3B /* IDeleteRequest.swift */; };
+		1A6188E9220874350007BD3B /* DeleteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6188E8220874350007BD3B /* DeleteRequest.swift */; };
+		1A6188ED220888120007BD3B /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6188EB220888120007BD3B /* ItemViewController.swift */; };
+		1A6188EE220888120007BD3B /* ItemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A6188EC220888120007BD3B /* ItemViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +76,10 @@
 		1A4DD3642207DB55000E6010 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		1A4DD3662207E526000E6010 /* ServiceAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAssembly.swift; sourceTree = "<group>"; };
 		1A4DD3682207E533000E6010 /* CoreAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAssembly.swift; sourceTree = "<group>"; };
+		1A6188E6220874210007BD3B /* IDeleteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDeleteRequest.swift; sourceTree = "<group>"; };
+		1A6188E8220874350007BD3B /* DeleteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRequest.swift; sourceTree = "<group>"; };
+		1A6188EB220888120007BD3B /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
+		1A6188EC220888120007BD3B /* ItemViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				1A4DD33C2207C775000E6010 /* ItemsList */,
+				1A6188EA220887F50007BD3B /* Item */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -266,8 +275,19 @@
 		1A4DD34D2207CEEF000E6010 /* DELETE */ = {
 			isa = PBXGroup;
 			children = (
+				1A6188E6220874210007BD3B /* IDeleteRequest.swift */,
+				1A6188E8220874350007BD3B /* DeleteRequest.swift */,
 			);
 			path = DELETE;
+			sourceTree = "<group>";
+		};
+		1A6188EA220887F50007BD3B /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				1A6188EB220888120007BD3B /* ItemViewController.swift */,
+				1A6188EC220888120007BD3B /* ItemViewController.xib */,
+			);
+			path = Item;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -353,6 +373,7 @@
 			files = (
 				1A4DD3382207BBAE000E6010 /* ItemCell.xib in Resources */,
 				1A4DD33E2207C908000E6010 /* ItemsListViewController.xib in Resources */,
+				1A6188EE220888120007BD3B /* ItemViewController.xib in Resources */,
 				1A4DD3182207B53B000E6010 /* LaunchScreen.storyboard in Resources */,
 				1A4DD3152207B53B000E6010 /* Assets.xcassets in Resources */,
 			);
@@ -381,9 +402,12 @@
 				1A4DD3402207CACF000E6010 /* PresentationAssembly.swift in Sources */,
 				1A4DD32F2207B5C0000E6010 /* ItemsListViewController.swift in Sources */,
 				1A4DD3692207E533000E6010 /* CoreAssembly.swift in Sources */,
+				1A6188E9220874350007BD3B /* DeleteRequest.swift in Sources */,
 				1A4DD3652207DB55000E6010 /* Request.swift in Sources */,
+				1A6188ED220888120007BD3B /* ItemViewController.swift in Sources */,
 				1A4DD35F2207D462000E6010 /* IRequestParser.swift in Sources */,
 				1A4DD35B2207D29F000E6010 /* WishlistManager.swift in Sources */,
+				1A6188E7220874210007BD3B /* IDeleteRequest.swift in Sources */,
 				1A4DD3552207CF7C000E6010 /* GetRequest.swift in Sources */,
 				1A4DD3372207BBAE000E6010 /* ItemCell.swift in Sources */,
 				1A4DD3632207DB4A000E6010 /* IRequest.swift in Sources */,

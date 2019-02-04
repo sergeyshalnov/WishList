@@ -17,11 +17,26 @@ class ItemsListViewController: UIViewController {
     
     // MARK: - Private variables
     
+    private let presentationAssembly: IPresentationAssembly
     private let wishlistManager: IWishlistManager
-    private let cellIdentifier = String(describing: ItemCell.self)
     
+    private let cellIdentifier = String(describing: ItemCell.self)
     private var itemsCount: Int = 0
-    // private var items: [ItemModel] = []
+    
+    
+    // MARK: - Initialization
+    
+    init(presentationAssembly: IPresentationAssembly, wishlistManager: IWishlistManager) {
+        self.presentationAssembly = presentationAssembly
+        self.wishlistManager = wishlistManager
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     // MARK: - Lifecycle functions
     
@@ -33,16 +48,6 @@ class ItemsListViewController: UIViewController {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-    }
-    
-    init(wishlistManager: IWishlistManager) {
-        self.wishlistManager = wishlistManager
-        
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     
@@ -95,7 +100,14 @@ class ItemsListViewController: UIViewController {
 
 extension ItemsListViewController: UITableViewDelegate {
  
-    // ---
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let item = wishlistManager.getItem(index: indexPath.row)
+        let itemController = presentationAssembly.Item(name: item.name, cost: item.cost, info: item.comment, url: item.url)
+        
+        navigationController?.pushViewController(itemController, animated: true)
+    }
     
 }
 
@@ -108,6 +120,24 @@ extension ItemsListViewController: UITableViewDataSource {
         return itemsCount
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            wishlistManager.deleteItem(index: indexPath.row) { (success) in
+                if success {
+                    self.itemsCount -= 1
+                    DispatchQueue.main.async {
+                        self.itemsTableView.deleteRows(at: [indexPath], with: .automatic)
+                    }
+                }
+                print("Success: \(success)")
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = itemsTableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ItemCell else {
             return UITableViewCell()
@@ -117,7 +147,9 @@ extension ItemsListViewController: UITableViewDataSource {
         
         cell.titleLabel.text = item.name
         cell.informationLabel.text = item.comment
-        cell.costLabel.text = String(item.cost)
+        cell.accessoryType = .disclosureIndicator
+        
+        print(cell.bounds.height)
         
         return cell
     }

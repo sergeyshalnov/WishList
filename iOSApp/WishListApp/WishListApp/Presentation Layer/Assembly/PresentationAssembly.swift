@@ -12,6 +12,7 @@ import UIKit
 protocol IPresentationAssembly {
     
     func ItemsList() -> UINavigationController
+    func Item(name: String, cost: Int, info: String, url: String) -> ItemViewController
     
 }
 
@@ -30,12 +31,18 @@ class PresentationAssembly: IPresentationAssembly {
     // MARK: - Main Funcionality
     
     func ItemsList() -> UINavigationController {
-        let controller = ItemsListViewController(wishlistManager: serviceAssembly.itemsManager())
+        let controller = ItemsListViewController(presentationAssembly: self, wishlistManager: serviceAssembly.itemsManager())
         let navigationController = UINavigationController()
         
         navigationController.viewControllers = [controller]
         
         return navigationController
+    }
+    
+    func Item(name: String, cost: Int, info: String, url: String) -> ItemViewController {
+        let controller = ItemViewController(name: name, cost: cost, info: info, url: url, wishlistManager: serviceAssembly.itemsManager())
+        
+        return controller
     }
     
 }

@@ -21,7 +21,6 @@ class WishlistRequest: IRequest {
     // MARK: - Calculated variables
     
     private var url: String {
-        print(baseUrl + port + "/" + prefix)
         return baseUrl + port + "/" + prefix
     }
     
