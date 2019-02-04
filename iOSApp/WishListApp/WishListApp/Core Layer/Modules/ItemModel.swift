@@ -16,6 +16,14 @@ struct ItemModel: Codable {
     let comment: String
     let cost: Int
     let url: String
+    
+    init(id: Int, name: String, comment: String, cost: Int, url: String) {
+        self.id = id
+        self.name = name
+        self.comment = comment
+        self.cost = cost
+        self.url = url
+    }
 
 }
 

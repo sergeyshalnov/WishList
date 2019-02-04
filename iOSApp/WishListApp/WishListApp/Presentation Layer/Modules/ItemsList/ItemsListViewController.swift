@@ -50,6 +50,10 @@ class ItemsListViewController: UIViewController {
         super.awakeFromNib()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        reloadTableViewData()
+    }
+    
     
     // MARK: - Setup
     
@@ -79,18 +83,24 @@ class ItemsListViewController: UIViewController {
     }
     
     private func setupWishlistManager() {
-        wishlistManager.performeRequest { (count) -> (Void) in
-            DispatchQueue.main.async {
-                self.itemsCount = count
-                self.itemsTableView.reloadData()
-            }
-        }
+        //
     }
     
     // MARK: - Button functions
     
     @objc private func addTapped() {
         
+    }
+    
+    // MARK: - Reload TableView Data
+    
+    private func reloadTableViewData() {
+        wishlistManager.performeRequest { (count) -> (Void) in
+            DispatchQueue.main.async {
+                self.itemsCount = count
+                self.itemsTableView.reloadData()
+            }
+        }
     }
 
 
@@ -104,7 +114,7 @@ extension ItemsListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let item = wishlistManager.getItem(index: indexPath.row)
-        let itemController = presentationAssembly.Item(name: item.name, cost: item.cost, info: item.comment, url: item.url)
+        let itemController = presentationAssembly.Item(item: item)
         
         navigationController?.pushViewController(itemController, animated: true)
     }

@@ -14,6 +14,7 @@ class WishlistManager: IWishlistManager {
     // MARK: - Private variables
     
     private let getRequest: IGetRequest
+    private let putRequest: IPutRequest
     private let deleteRequest: IDeleteRequest
     private let requestParser: RequestParser
     
@@ -22,8 +23,9 @@ class WishlistManager: IWishlistManager {
     
     // MARK: - Initialization
     
-    init(getRequest: IGetRequest, deleteRequest: IDeleteRequest, requestParser: RequestParser) {
+    init(getRequest: IGetRequest, putRequest: IPutRequest, deleteRequest: IDeleteRequest, requestParser: RequestParser) {
         self.getRequest = getRequest
+        self.putRequest = putRequest
         self.deleteRequest = deleteRequest
         self.requestParser = requestParser
     }
@@ -46,6 +48,14 @@ class WishlistManager: IWishlistManager {
     
     func getItem(index: Int) -> ItemModel {
         return temporaryItemsArray[index]
+    }
+    
+    func editItem(item: ItemModel, completion: @escaping (Bool) -> Void) {
+        
+        putRequest.request(model: item) { (success) in
+            completion(success)
+        }
+        
     }
     
     func deleteItem(index: Int, completion: @escaping (Bool) -> Void) {

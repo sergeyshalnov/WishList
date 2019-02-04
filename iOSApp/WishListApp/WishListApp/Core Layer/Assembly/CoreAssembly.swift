@@ -12,6 +12,7 @@ import Foundation
 protocol ICoreAssembly {
     
     func getRequest() -> IGetRequest
+    func putRequest() -> IPutRequest
     func deleteRequest() -> IDeleteRequest
     func requestParser() -> RequestParser
     
@@ -22,6 +23,10 @@ class CoreAssembly: ICoreAssembly {
     
     func getRequest() -> IGetRequest {
         return GetRequest(config: WishlistRequestConfiguration())
+    }
+    
+    func putRequest() -> IPutRequest {
+        return PutRequest(config: WishlistRequestConfiguration())
     }
     
     func deleteRequest() -> IDeleteRequest {

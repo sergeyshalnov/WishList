@@ -35,6 +35,8 @@
 		1A6188E9220874350007BD3B /* DeleteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6188E8220874350007BD3B /* DeleteRequest.swift */; };
 		1A6188ED220888120007BD3B /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6188EB220888120007BD3B /* ItemViewController.swift */; };
 		1A6188EE220888120007BD3B /* ItemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A6188EC220888120007BD3B /* ItemViewController.xib */; };
+		1A6188F02208A2120007BD3B /* IPutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6188EF2208A2120007BD3B /* IPutRequest.swift */; };
+		1A6188F22208A21E0007BD3B /* PutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6188F12208A21E0007BD3B /* PutRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +82,8 @@
 		1A6188E8220874350007BD3B /* DeleteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRequest.swift; sourceTree = "<group>"; };
 		1A6188EB220888120007BD3B /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		1A6188EC220888120007BD3B /* ItemViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemViewController.xib; sourceTree = "<group>"; };
+		1A6188EF2208A2120007BD3B /* IPutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPutRequest.swift; sourceTree = "<group>"; };
+		1A6188F12208A21E0007BD3B /* PutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,6 +272,8 @@
 		1A4DD34C2207CEE9000E6010 /* PUT */ = {
 			isa = PBXGroup;
 			children = (
+				1A6188EF2208A2120007BD3B /* IPutRequest.swift */,
+				1A6188F12208A21E0007BD3B /* PutRequest.swift */,
 			);
 			path = PUT;
 			sourceTree = "<group>";
@@ -409,10 +415,12 @@
 				1A4DD35B2207D29F000E6010 /* WishlistManager.swift in Sources */,
 				1A6188E7220874210007BD3B /* IDeleteRequest.swift in Sources */,
 				1A4DD3552207CF7C000E6010 /* GetRequest.swift in Sources */,
+				1A6188F02208A2120007BD3B /* IPutRequest.swift in Sources */,
 				1A4DD3372207BBAE000E6010 /* ItemCell.swift in Sources */,
 				1A4DD3632207DB4A000E6010 /* IRequest.swift in Sources */,
 				1A4DD35D2207D44A000E6010 /* RequestParser.swift in Sources */,
 				1A4DD3532207CF74000E6010 /* IGetRequest.swift in Sources */,
+				1A6188F22208A21E0007BD3B /* PutRequest.swift in Sources */,
 				1A4DD3572207D06F000E6010 /* RequestConfiguration.swift in Sources */,
 				1A4DD3422207CBA4000E6010 /* RootAssembly.swift in Sources */,
 			);

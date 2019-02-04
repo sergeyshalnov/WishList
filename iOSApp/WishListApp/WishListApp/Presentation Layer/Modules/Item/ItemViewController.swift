@@ -20,19 +20,13 @@ class ItemViewController: UIViewController {
     // MARK: - Private variables
     
     private let wishlistManager: IWishlistManager
+    private var item: ItemModel
     
-    private let name: String
-    private let cost: String
-    private let info: String
-    private let url: String
     
     // MARK: - Initialization
     
-    init(name: String, cost: Int, info: String, url: String, wishlistManager: IWishlistManager) {
-        self.name = name.uppercased()
-        self.cost = String(cost) + "$"
-        self.info = info.capitalized
-        self.url = url
+    init(item: ItemModel, wishlistManager: IWishlistManager) {
+        self.item = item
         self.wishlistManager = wishlistManager
         
         super.init(nibName: nil, bundle: nil)
@@ -70,10 +64,10 @@ class ItemViewController: UIViewController {
     }
     
     private func setupLabels() {
-        titleLabel.text = name
-        infoView.text = info
-        costLabel.text = cost
-        urlLabel.text = url
+        titleLabel.text = item.name
+        infoView.text = item.comment
+        costLabel.text = String(item.cost) + "$"
+        urlLabel.text = item.url
         
         infoView.textContainerInset = UIEdgeInsets.zero
         infoView.textContainer.lineFragmentPadding = 0
@@ -87,6 +81,20 @@ class ItemViewController: UIViewController {
     }
     
     @objc private func endEditItemTouch() {
+        guard let newName = titleLabel.text == self.item.name ? "" : titleLabel.text else { return }
+        guard let newInfo = infoView.text == self.item.comment ? "" : infoView.text else { return }
+        guard let newUrl = urlLabel.text == self.item.url ? "" : urlLabel.text else { return }
+        
+        guard let costString = costLabel.text else { return }
+        guard let newCost = Int(costString) == self.item.cost ? self.item.cost : Int(costString) else { return }
+        
+        let item = ItemModel(id: self.item.id, name: newName, comment: newInfo, cost: newCost, url: newUrl)
+        self.item = item
+        
+        wishlistManager.editItem(item: item) { (success) in
+            print("Success edit save: \(success)")
+        }
+        
         editMode(false)
     }
     
@@ -106,6 +114,9 @@ class ItemViewController: UIViewController {
         costLabel.textColor = color
         infoView.textColor = secondaryColor
         urlLabel.textColor = color
+        
+        guard let costString = costLabel.text else { return }
+        costLabel.text = activate ? String(item.cost) : costString + "$"
         
         let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editItemTouch))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEditItemTouch))
