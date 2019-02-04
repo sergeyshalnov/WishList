@@ -162,8 +162,6 @@ extension ItemsListViewController: UITableViewDataSource {
         cell.informationLabel.text = item.comment
         cell.accessoryType = .disclosureIndicator
         
-        print(cell.bounds.height)
-        
         return cell
     }
     

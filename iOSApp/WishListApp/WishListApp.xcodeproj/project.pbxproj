@@ -128,11 +128,9 @@
 				1A4DD3392207C721000E6010 /* Presentation Layer */,
 				1A4DD3432207CC18000E6010 /* Service Layer */,
 				1A4DD3442207CC26000E6010 /* Core Layer */,
+				1A6188F72208FD480007BD3B /* Common */,
 				1A4DD3412207CBA4000E6010 /* RootAssembly.swift */,
 				1A4DD30D2207B539000E6010 /* AppDelegate.swift */,
-				1A4DD3142207B53B000E6010 /* Assets.xcassets */,
-				1A4DD3162207B53B000E6010 /* LaunchScreen.storyboard */,
-				1A4DD3192207B53B000E6010 /* Info.plist */,
 			);
 			path = WishListApp;
 			sourceTree = "<group>";
@@ -212,8 +210,8 @@
 		1A4DD3462207CC5B000E6010 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				1A6188F62208FD2E0007BD3B /* Models */,
 				1A4DD3492207CC82000E6010 /* Network */,
-				1A4DD3602207D4E9000E6010 /* ItemModel.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -242,11 +240,9 @@
 				1A4DD34B2207CEE3000E6010 /* POST */,
 				1A4DD34C2207CEE9000E6010 /* PUT */,
 				1A4DD34D2207CEEF000E6010 /* DELETE */,
-				1A4DD3562207D06F000E6010 /* RequestConfiguration.swift */,
-				1A4DD3622207DB4A000E6010 /* IRequest.swift */,
-				1A4DD35E2207D462000E6010 /* IRequestParser.swift */,
-				1A4DD3642207DB55000E6010 /* Request.swift */,
-				1A4DD35C2207D44A000E6010 /* RequestParser.swift */,
+				1A6188F32208FCD10007BD3B /* Request */,
+				1A6188F42208FCE20007BD3B /* Parser */,
+				1A6188F52208FCFC0007BD3B /* Configuration */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -294,6 +290,50 @@
 				1A6188EC220888120007BD3B /* ItemViewController.xib */,
 			);
 			path = Item;
+			sourceTree = "<group>";
+		};
+		1A6188F32208FCD10007BD3B /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				1A4DD3622207DB4A000E6010 /* IRequest.swift */,
+				1A4DD3642207DB55000E6010 /* Request.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		1A6188F42208FCE20007BD3B /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				1A4DD35E2207D462000E6010 /* IRequestParser.swift */,
+				1A4DD35C2207D44A000E6010 /* RequestParser.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		1A6188F52208FCFC0007BD3B /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				1A4DD3562207D06F000E6010 /* RequestConfiguration.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		1A6188F62208FD2E0007BD3B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1A4DD3602207D4E9000E6010 /* ItemModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1A6188F72208FD480007BD3B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				1A4DD3142207B53B000E6010 /* Assets.xcassets */,
+				1A4DD3162207B53B000E6010 /* LaunchScreen.storyboard */,
+				1A4DD3192207B53B000E6010 /* Info.plist */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -578,7 +618,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8UNQZ8NSJN;
-				INFOPLIST_FILE = WishListApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/WishListApp/Common/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -596,7 +636,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8UNQZ8NSJN;
-				INFOPLIST_FILE = WishListApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/WishListApp/Common/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
