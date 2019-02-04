@@ -25,7 +25,7 @@ class ServiceAssembly: IServiceAssembly {
     }
     
     func itemsManager() -> IWishlistManager {
-        return WishlistManager(getRequest: coreAssembly.getRequest(), putRequest: coreAssembly.putRequest(), deleteRequest: coreAssembly.deleteRequest(), requestParser: coreAssembly.requestParser())
+        return WishlistManager(getRequest: coreAssembly.getRequest(), postRequest: coreAssembly.postRequest(), putRequest: coreAssembly.putRequest(), deleteRequest: coreAssembly.deleteRequest(), requestParser: coreAssembly.requestParser())
     }
     
 }

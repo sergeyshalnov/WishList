@@ -11,4 +11,7 @@ import Foundation
 
 protocol IPostRequest {
     
+    func request(model: ItemModel, completion: @escaping (Bool) -> Void)
+    func cancel()
+    
 }

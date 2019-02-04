@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum ViewMode {
+    case edit
+    case add
+}
+
 class ItemViewController: UIViewController {
     
     // MARK: - Outlets
@@ -21,12 +26,14 @@ class ItemViewController: UIViewController {
     
     private let wishlistManager: IWishlistManager
     private var item: ItemModel
+    private var mode: ViewMode
     
     
     // MARK: - Initialization
     
-    init(item: ItemModel, wishlistManager: IWishlistManager) {
+    init(item: ItemModel, wishlistManager: IWishlistManager, mode: ViewMode) {
         self.item = item
+        self.mode = mode
         self.wishlistManager = wishlistManager
         
         super.init(nibName: nil, bundle: nil)
@@ -53,12 +60,12 @@ class ItemViewController: UIViewController {
     // MARK: - Setup
     
     private func setup() {
-        setupNavigationController()
         setupLabels()
+        setupNavigationController()
     }
     
     private func setupNavigationController() {
-        editMode(false)
+        editMode(mode == .add)
         
         navigationItem.largeTitleDisplayMode = .never
     }
@@ -66,7 +73,7 @@ class ItemViewController: UIViewController {
     private func setupLabels() {
         titleLabel.text = item.name
         infoView.text = item.comment
-        costLabel.text = String(item.cost) + "$"
+        costLabel.text = String(item.cost) 
         urlLabel.text = item.url
         
         infoView.textContainerInset = UIEdgeInsets.zero
@@ -91,9 +98,18 @@ class ItemViewController: UIViewController {
         let item = ItemModel(id: self.item.id, name: newName, comment: newInfo, cost: newCost, url: newUrl)
         self.item = item
         
-        wishlistManager.editItem(item: item) { (success) in
-            print("Success edit save: \(success)")
+        switch mode {
+        case .add:
+            wishlistManager.addItem(item: item) { (success) in
+                print("Success add item: \(success)")
+                self.mode = .edit
+            }
+        case .edit:
+            wishlistManager.editItem(item: item) { (success) in
+                print("Success edit save: \(success)")
+            }
         }
+        
         
         editMode(false)
     }

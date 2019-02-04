@@ -89,7 +89,10 @@ class ItemsListViewController: UIViewController {
     // MARK: - Button functions
     
     @objc private func addTapped() {
+        let item = ItemModel(id: 0, name: "", comment: "", cost: 0, url: "")
+        let itemController = presentationAssembly.Item(item: item, mode: .add)
         
+        navigationController?.pushViewController(itemController, animated: true)
     }
     
     // MARK: - Reload TableView Data
@@ -114,7 +117,7 @@ extension ItemsListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let item = wishlistManager.getItem(index: indexPath.row)
-        let itemController = presentationAssembly.Item(item: item)
+        let itemController = presentationAssembly.Item(item: item, mode: .edit)
         
         navigationController?.pushViewController(itemController, animated: true)
     }
