@@ -9,40 +9,10 @@
 import Foundation
 
 
-class PutRequest: IPutRequest {
+class PutRequest: RequestTemplate, IPutRequest {
     
-    private var task: URLSessionDataTask?
-    private let config: IRequestConfiguration
-    
-    init(config: IRequestConfiguration) {
-        self.config = config
-    }
-    
-    func request(model: ItemModel, completion: @escaping (Bool) -> Void) {
-        guard var request = config.url() else { return }
-        
-        let session = URLSession.shared
-        
-        request.httpMethod = "PUT"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        guard let httpBody = try? JSONEncoder().encode(model) else {
-            completion(false)
-            return
-        }
-        
-        request.httpBody = httpBody
-        
-        task = session.dataTask(with: request) { (data, response, error) in
-            completion(error == nil)
-        }
-        
-        
-        task?.resume()
-    }
-    
-    func cancel() {
-        task?.cancel()
+    override var httpMethod: String {
+        return "PUT"
     }
     
 }

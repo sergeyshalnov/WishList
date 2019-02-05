@@ -9,24 +9,35 @@
 import UIKit
 
 
-// MARK: - Enum for edit mode
-
-enum ViewMode {
-    case edit
-    case add
-}
-
-
-// MARK: - ItemViewController
-
 class ItemViewController: UIViewController {
+    
+    // MARK: - Enum for edit mode
+    
+    enum ViewMode {
+        case edit
+        case add
+    }
     
     // MARK: - Outlets
     
-    @IBOutlet weak var titleLabel: UITextField!
-    @IBOutlet weak var costLabel: UITextField!
-    @IBOutlet weak var infoView: UITextView!
-    @IBOutlet weak var urlLabel: UITextField!
+    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var costTextField: UITextField!
+    @IBOutlet weak var infoTextView: UITextView!
+    @IBOutlet weak var urlTextField: UITextField!
+    
+    // MARK: - Custom TextView placeholder
+    
+    private let textViewPlaceholder : UILabel = {
+        let label = UILabel()
+        label.text = "Enter information about item"
+        
+        label.font = UIFont.systemFont(ofSize: 17.0)
+        label.sizeToFit()
+        label.frame.origin = CGPoint(x: 0, y: 0)
+        label.textColor = UIColor.lightGray
+        
+        return label
+    }()
     
     // MARK: - Private variables
     
@@ -36,13 +47,14 @@ class ItemViewController: UIViewController {
     
     // MARK: - Calculated variables
     
+    // ModifiedItem is used to send changes to the server
     private var modifiedItem: ItemModel? {
         get {
-            guard let newName = titleLabel.text == self.item.name ? "" : titleLabel.text else { return nil }
-            guard let newInfo = infoView.text == self.item.comment ? "" : infoView.text else { return nil}
-            guard let newUrl = urlLabel.text == self.item.url ? "" : urlLabel.text else { return nil }
+            guard let newName = titleTextField.text == self.item.name ? "" : titleTextField.text else { return nil }
+            guard let newInfo = infoTextView.text == self.item.comment ? "" : infoTextView.text else { return nil}
+            guard let newUrl = urlTextField.text == self.item.url ? "" : urlTextField.text else { return nil }
             
-            guard let costString = costLabel.text else { return nil }
+            guard let costString = costTextField.text else { return nil }
             guard let newCost = Int(costString) == self.item.cost ? self.item.cost : Int(costString) else { return nil }
             
             let item = ItemModel(id: self.item.id, name: newName, comment: newInfo, cost: newCost, url: newUrl)
@@ -95,23 +107,48 @@ class ItemViewController: UIViewController {
     }
     
     private func setupLabels() {
-        titleLabel.text = item.name
-        infoView.text = item.comment
-        costLabel.text = String(item.cost) 
-        urlLabel.text = item.url
+        setupInputContent(isEditing: mode == .add)
         
-        titleLabel.delegate = self
-        infoView.delegate = self
-        costLabel.delegate = self
-        urlLabel.delegate = self
+        titleTextField.delegate = self
+        infoTextView.delegate = self
+        costTextField.delegate = self
+        urlTextField.delegate = self
         
-        infoView.textContainerInset = UIEdgeInsets.zero
-        infoView.textContainer.lineFragmentPadding = 0
+        titleTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        costTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        urlTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        
+        infoTextView.textContainerInset = UIEdgeInsets.zero
+        infoTextView.textContainer.lineFragmentPadding = 0
+        infoTextView.addSubview(textViewPlaceholder)
+        
+        textViewPlaceholder.isHidden = mode == .edit
+        
+        if mode == .add { changeButtonState() }
     }
     
     private func setupKeyboardAppearance() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func setupInputContent(isEditing: Bool) {
+        switch isEditing {
+        case true:
+            titleTextField.text = item.name
+            infoTextView.text = item.comment
+            costTextField.text = item.cost == 0 ? "" : String(item.cost)
+            urlTextField.text = item.url
+        case false:
+            titleTextField.text = item.name.isEmpty ? "-" : item.name
+            infoTextView.text = item.comment.isEmpty ? "-" : item.comment
+            costTextField.text = item.cost == 0 ? "-" : String(item.cost) + "$"
+            urlTextField.text = item.url.isEmpty ? "-" : item.url
+        }
+        
+        
+//        guard let costString = costTextField.text else { return }
+//        costTextField.text = activate ? (item.cost == 0 ? "" : String(item.cost)) : costString + "$"
     }
     
     
@@ -147,47 +184,85 @@ class ItemViewController: UIViewController {
     @objc private func endEditItemTouch() {
         guard let item = modifiedItem else { return }
         
-        self.item = item
+        self.item.name = item.name.isEmpty ? self.item.name: item.name
+        self.item.comment = item.comment.isEmpty ? self.item.comment: item.comment
+        self.item.url = item.url.isEmpty ? self.item.url: item.url
+        self.item.cost = item.cost
         
         switch mode {
         case .add:
-            wishlistManager.addItem(item: item) { (success) in
-                print("Success add item: \(success)")
-                self.mode = .edit
+            wishlistManager.addItem(item: item) { (success, message) in
+                DispatchQueue.main.async {
+                    if success {
+                        self.mode = .edit
+                        self.editMode(false)
+                    } else {
+                        let alert = Alert.controller(type: .saveError, message: message)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+                
+                print("Add item: \(success)")
             }
         case .edit:
-            wishlistManager.editItem(item: item) { (success) in
-                print("Success edit save: \(success)")
+            wishlistManager.editItem(item: item) { (success, message) in
+                DispatchQueue.main.async {
+                    if success {
+                        self.editMode(false)
+                    } else {
+                        let alert = Alert.controller(type: .saveError, message: message)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+                
+                print("Edit save: \(success)")
             }
         }
-        
-        editMode(false)
+    }
+    
+    
+    // MARK: - TextField functions
+    
+    @objc private func textFieldChanged() {
+        changeButtonState()
     }
     
     
     // MARK: - Private functions
     
+    private func changeButtonState() {
+        guard let titleFlag = titleTextField.text?.isEmpty else { return }
+        guard let costFlag = costTextField.text?.isEmpty else { return }
+        guard let urlFlag = urlTextField.text?.isEmpty else { return }
+        let inputIsEmpty = infoTextView.text.isEmpty || titleFlag || costFlag || urlFlag
+        
+        navigationItem.rightBarButtonItem?.isEnabled = !inputIsEmpty
+        
+        textViewPlaceholder.isHidden = !infoTextView.text.isEmpty
+    }
+    
     private func editMode(_ activate: Bool) {
         let color = activate ? view.tintColor : UIColor.black
         let secondaryColor = activate ? view.tintColor : UIColor.darkGray
         
-        titleLabel.isEnabled = activate
-        costLabel.isEnabled = activate
-        infoView.isEditable = activate
-        urlLabel.isEnabled = activate
+        setupInputContent(isEditing: activate)
         
-        titleLabel.textColor = color
-        costLabel.textColor = color
-        infoView.textColor = secondaryColor
-        urlLabel.textColor = color
+        titleTextField.isEnabled = activate
+        costTextField.isEnabled = activate
+        infoTextView.isEditable = activate
+        urlTextField.isEnabled = activate
         
-        guard let costString = costLabel.text else { return }
-        costLabel.text = activate ? String(item.cost) : costString + "$"
+        titleTextField.textColor = color
+        costTextField.textColor = color
+        infoTextView.textColor = secondaryColor
+        urlTextField.textColor = color
         
         let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editItemTouch))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEditItemTouch))
         
         navigationItem.rightBarButtonItem = activate ? doneButton : editButton
+        
+        changeButtonState()
     }
     
 }
@@ -215,6 +290,10 @@ extension ItemViewController: UITextViewDelegate {
             return false
         }
         return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        changeButtonState()
     }
     
 }

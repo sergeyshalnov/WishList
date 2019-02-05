@@ -52,18 +52,18 @@ class WishlistManager: IWishlistManager {
         return temporaryItemsArray[index]
     }
     
-    func addItem(item: ItemModel, completion: @escaping (Bool) -> Void) {
+    func addItem(item: ItemModel, completion: @escaping (Bool, MessageModel?) -> Void) {
         
-        postRequest.request(model: item) { (success) in
-            completion(success)
+        postRequest.request(model: item) { (success, message) in
+            completion(success, message)
         }
         
     }
     
-    func editItem(item: ItemModel, completion: @escaping (Bool) -> Void) {
+    func editItem(item: ItemModel, completion: @escaping (Bool, MessageModel?) -> Void) {
         
-        putRequest.request(model: item) { (success) in
-            completion(success)
+        putRequest.request(model: item) { (success, message) in
+            completion(success, message)
         }
         
     }

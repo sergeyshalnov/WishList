@@ -11,7 +11,7 @@ import Foundation
 
 protocol IPutRequest {
     
-    func request(model: ItemModel, completion: @escaping (Bool) -> Void) 
+    func request(model: ItemModel, completion: @escaping (Bool, MessageModel?) -> Void) 
     func cancel()
     
 }

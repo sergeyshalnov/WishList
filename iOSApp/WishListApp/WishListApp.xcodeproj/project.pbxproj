@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A0C3BA32209A8730066DA3F /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C3BA22209A8730066DA3F /* Alert.swift */; };
+		1A0C3BA52209B9A00066DA3F /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C3BA42209B9A00066DA3F /* MessageModel.swift */; };
+		1A0C3BA92209E0610066DA3F /* RequestTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C3BA82209E0610066DA3F /* RequestTemplate.swift */; };
 		1A4DD30E2207B539000E6010 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4DD30D2207B539000E6010 /* AppDelegate.swift */; };
 		1A4DD3152207B53B000E6010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A4DD3142207B53B000E6010 /* Assets.xcassets */; };
 		1A4DD3182207B53B000E6010 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A4DD3162207B53B000E6010 /* LaunchScreen.storyboard */; };
@@ -50,6 +53,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A0C3BA22209A8730066DA3F /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		1A0C3BA42209B9A00066DA3F /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
+		1A0C3BA82209E0610066DA3F /* RequestTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTemplate.swift; sourceTree = "<group>"; };
 		1A4DD30A2207B539000E6010 /* WishListApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WishListApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A4DD30D2207B539000E6010 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A4DD3142207B53B000E6010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -104,6 +110,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A0C3BA12209A8580066DA3F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1A0C3BA22209A8730066DA3F /* Alert.swift */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1A0C3BA72209E0510066DA3F /* RequestTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				1A0C3BA82209E0610066DA3F /* RequestTemplate.swift */,
+			);
+			path = RequestTemplate;
+			sourceTree = "<group>";
+		};
 		1A4DD3012207B538000E6010 = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +150,7 @@
 				1A4DD3392207C721000E6010 /* Presentation Layer */,
 				1A4DD3432207CC18000E6010 /* Service Layer */,
 				1A4DD3442207CC26000E6010 /* Core Layer */,
+				1A0C3BA12209A8580066DA3F /* Supporting Files */,
 				1A6188F72208FD480007BD3B /* Common */,
 				1A4DD3412207CBA4000E6010 /* RootAssembly.swift */,
 				1A4DD30D2207B539000E6010 /* AppDelegate.swift */,
@@ -236,6 +259,7 @@
 		1A4DD3492207CC82000E6010 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				1A0C3BA72209E0510066DA3F /* RequestTemplate */,
 				1A4DD34A2207CEDD000E6010 /* GET */,
 				1A4DD34B2207CEE3000E6010 /* POST */,
 				1A4DD34C2207CEE9000E6010 /* PUT */,
@@ -322,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				1A4DD3602207D4E9000E6010 /* ItemModel.swift */,
+				1A0C3BA42209B9A00066DA3F /* MessageModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -442,6 +467,7 @@
 				1A4DD3612207D4E9000E6010 /* ItemModel.swift in Sources */,
 				1A4DD30E2207B539000E6010 /* AppDelegate.swift in Sources */,
 				1A4DD3512207CF4E000E6010 /* PostRequest.swift in Sources */,
+				1A0C3BA32209A8730066DA3F /* Alert.swift in Sources */,
 				1A4DD3672207E526000E6010 /* ServiceAssembly.swift in Sources */,
 				1A4DD3592207D294000E6010 /* IWishlistManager.swift in Sources */,
 				1A4DD34F2207CF3B000E6010 /* IPostRequest.swift in Sources */,
@@ -457,8 +483,10 @@
 				1A4DD3552207CF7C000E6010 /* GetRequest.swift in Sources */,
 				1A6188F02208A2120007BD3B /* IPutRequest.swift in Sources */,
 				1A4DD3372207BBAE000E6010 /* ItemCell.swift in Sources */,
+				1A0C3BA52209B9A00066DA3F /* MessageModel.swift in Sources */,
 				1A4DD3632207DB4A000E6010 /* IRequest.swift in Sources */,
 				1A4DD35D2207D44A000E6010 /* RequestParser.swift in Sources */,
+				1A0C3BA92209E0610066DA3F /* RequestTemplate.swift in Sources */,
 				1A4DD3532207CF74000E6010 /* IGetRequest.swift in Sources */,
 				1A6188F22208A21E0007BD3B /* PutRequest.swift in Sources */,
 				1A4DD3572207D06F000E6010 /* RequestConfiguration.swift in Sources */,

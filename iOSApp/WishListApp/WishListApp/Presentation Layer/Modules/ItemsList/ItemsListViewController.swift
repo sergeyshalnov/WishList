@@ -105,6 +105,24 @@ class ItemsListViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - Private functions
+    
+    private func deleteItem(index: IndexPath) {
+        wishlistManager.deleteItem(index: index.row) { (success) in
+            if success {
+                self.itemsCount -= 1
+                DispatchQueue.main.async {
+                    self.itemsTableView.deleteRows(at: [index], with: .automatic)
+                }
+            } else {
+                let alert = Alert.controller(type: .deleteError)
+                self.present(alert, animated: true, completion: nil)
+            }
+
+            print("Delete item: \(success)")
+        }
+    }
 
 
 }
@@ -139,15 +157,7 @@ extension ItemsListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            wishlistManager.deleteItem(index: indexPath.row) { (success) in
-                if success {
-                    self.itemsCount -= 1
-                    DispatchQueue.main.async {
-                        self.itemsTableView.deleteRows(at: [indexPath], with: .automatic)
-                    }
-                }
-                print("Success: \(success)")
-            }
+            deleteItem(index: indexPath)
         }
     }
     

@@ -12,10 +12,10 @@ import Foundation
 struct ItemModel: Codable {
     
     let id: Int
-    let name: String
-    let comment: String
-    let cost: Int
-    let url: String
+    var name: String
+    var comment: String
+    var cost: Int
+    var url: String
     
     init(id: Int, name: String, comment: String, cost: Int, url: String) {
         self.id = id
