@@ -13,4 +13,8 @@ struct MessageModel: Codable {
     
     let message: String
     
+    init(message: String) {
+        self.message = message
+    }
+    
 }

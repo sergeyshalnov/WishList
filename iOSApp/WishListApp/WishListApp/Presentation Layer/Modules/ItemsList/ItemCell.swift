@@ -13,6 +13,8 @@ class ItemCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var informationLabel: UILabel!
     
+    var id: Int?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }

@@ -22,7 +22,7 @@ class RequestTemplate {
         self.config = config
     }
     
-    func request(model: ItemModel, completion: @escaping (Bool, MessageModel?) -> Void) {
+    func request(model: ItemModel, completion: @escaping (Bool, MessageModel?, Data?) -> Void) {
         guard var request = config.url() else { return }
         
         let session = URLSession.shared
@@ -31,7 +31,7 @@ class RequestTemplate {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let httpBody = try? JSONEncoder().encode(model) else {
-            completion(false, nil)
+            completion(false, nil, nil)
             return
         }
         
@@ -39,20 +39,20 @@ class RequestTemplate {
         
         task = session.dataTask(with: request) { (data, response, error) in
             guard let data = data else {
-                completion(false, nil)
+                completion(false, nil, nil)
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse else {
-                completion(false, nil)
+                completion(false, nil, nil)
                 return
             }
             
             if httpResponse.statusCode == 400 {
                 let message = try? JSONDecoder().decode(MessageModel.self, from: data)
-                completion(false, message)
+                completion(false, message, nil)
             } else {
-                completion(error == nil, nil)
+                completion(error == nil, nil, data)
             }
         }
         

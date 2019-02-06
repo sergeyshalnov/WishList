@@ -23,6 +23,16 @@ class ItemsListViewController: UIViewController {
     private let cellIdentifier = String(describing: ItemCell.self)
     private var itemsCount: Int = 0
     
+    // RefreshControl setup
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: .valueChanged)
+        
+        return refreshControl
+    }()
+    
     
     // MARK: - Initialization
     
@@ -80,11 +90,14 @@ class ItemsListViewController: UIViewController {
         
         itemsTableView.register(UINib(nibName: cellIdentifier, bundle: nil),
                                 forCellReuseIdentifier: cellIdentifier)
+        
+        itemsTableView.refreshControl = refreshControl
     }
     
     private func setupWishlistManager() {
         //
     }
+    
     
     // MARK: - Button functions
     
@@ -95,6 +108,13 @@ class ItemsListViewController: UIViewController {
         navigationController?.pushViewController(itemController, animated: true)
     }
     
+    // MARK: - Refresh control function
+    
+    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+        reloadTableViewData()
+    }
+    
+    
     // MARK: - Reload TableView Data
     
     private func reloadTableViewData() {
@@ -102,14 +122,16 @@ class ItemsListViewController: UIViewController {
             DispatchQueue.main.async {
                 self.itemsCount = count
                 self.itemsTableView.reloadData()
+                self.refreshControl.endRefreshing()
             }
         }
     }
     
+    
     // MARK: - Private functions
     
-    private func deleteItem(index: IndexPath) {
-        wishlistManager.deleteItem(index: index.row) { (success) in
+    private func deleteItem(index: IndexPath, id: Int) {
+        wishlistManager.deleteItem(id: id) { (success) in
             if success {
                 self.itemsCount -= 1
                 DispatchQueue.main.async {
@@ -157,7 +179,10 @@ extension ItemsListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            deleteItem(index: indexPath)
+            guard let itemCell = tableView.cellForRow(at: indexPath) as? ItemCell else { return }
+            guard let itemId = itemCell.id else { return }
+            
+            deleteItem(index: indexPath, id: itemId)
         }
     }
     
@@ -168,6 +193,7 @@ extension ItemsListViewController: UITableViewDataSource {
         
         let item = wishlistManager.getItem(index: indexPath.row)
         
+        cell.id = item.id
         cell.titleLabel.text = item.name
         cell.informationLabel.text = item.comment
         cell.accessoryType = .disclosureIndicator

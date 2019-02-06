@@ -13,8 +13,9 @@ protocol IWishlistManager {
     
     func performeRequest(completion: ((Int) -> (Void))?)
     func getItem(index: Int) -> ItemModel
-    func addItem(item: ItemModel, completion: @escaping (Bool, MessageModel?) -> Void) 
-    func editItem(item: ItemModel, completion: @escaping (Bool, MessageModel?) -> Void) 
+    func addItem(item: ItemModel, completion: @escaping (Bool, MessageModel?, ItemModel?) -> Void)
+    func editItem(item: ItemModel, completion: @escaping (Bool, MessageModel?, ItemModel?) -> Void) 
     func deleteItem(index: Int, completion: @escaping (Bool) -> Void)
+    func deleteItem(id: Int, completion: @escaping (Bool) -> Void)
     
 }

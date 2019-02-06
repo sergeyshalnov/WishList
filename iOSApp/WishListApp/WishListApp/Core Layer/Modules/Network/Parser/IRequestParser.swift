@@ -10,8 +10,10 @@ import Foundation
 
 
 protocol IRequestParser {
+    associatedtype Models
     associatedtype Model
     
+    func parseAll(data: Data) -> Models?
     func parse(data: Data) -> Model?
     
 }

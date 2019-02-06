@@ -11,7 +11,7 @@ import Foundation
 
 struct ItemModel: Codable {
     
-    let id: Int
+    var id: Int
     var name: String
     var comment: String
     var cost: Int
@@ -25,6 +25,13 @@ struct ItemModel: Codable {
         self.url = url
     }
 
+}
+
+struct OneItemResponseModel: Codable {
+    
+    let status: String
+    let data: ItemModel
+    
 }
 
 struct WishlistResponseModel: Codable {

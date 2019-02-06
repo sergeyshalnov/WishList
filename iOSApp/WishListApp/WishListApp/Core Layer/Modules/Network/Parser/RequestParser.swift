@@ -10,12 +10,22 @@ import Foundation
 
 
 class RequestParser: IRequestParser {
-    typealias Model = [ItemModel]
+    typealias Models = [ItemModel]
+    typealias Model = ItemModel
     
-    func parse(data: Data) -> [ItemModel]? {
+    func parseAll(data: Data) -> [ItemModel]? {
         do {
             let wishlist = try JSONDecoder().decode(WishlistResponseModel.self, from: data)
             return wishlist.data
+        } catch {
+            return nil
+        }
+    }
+    
+    func parse(data:Data) -> ItemModel? {
+        do {
+            let item = try JSONDecoder().decode(OneItemResponseModel.self, from: data)
+            return item.data
         } catch {
             return nil
         }

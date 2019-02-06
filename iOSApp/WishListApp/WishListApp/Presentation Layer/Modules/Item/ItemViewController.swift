@@ -53,9 +53,16 @@ class ItemViewController: UIViewController {
             guard let newName = titleTextField.text == self.item.name ? "" : titleTextField.text else { return nil }
             guard let newInfo = infoTextView.text == self.item.comment ? "" : infoTextView.text else { return nil}
             guard let newUrl = urlTextField.text == self.item.url ? "" : urlTextField.text else { return nil }
-            
             guard let costString = costTextField.text else { return nil }
-            guard let newCost = Int(costString) == self.item.cost ? self.item.cost : Int(costString) else { return nil }
+            
+            let costInt = Int(costString)
+            
+            if costInt == nil {
+                let alert = Alert.controller(type: .costError)
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+            guard let newCost = costInt == self.item.cost ? self.item.cost : costInt else { return nil }
             
             let item = ItemModel(id: self.item.id, name: newName, comment: newInfo, cost: newCost, url: newUrl)
             
@@ -132,12 +139,13 @@ class ItemViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    // Use this function for pretty printed data
     private func setupInputContent(isEditing: Bool) {
         switch isEditing {
         case true:
             titleTextField.text = item.name
             infoTextView.text = item.comment
-            costTextField.text = item.cost == 0 ? "" : String(item.cost)
+            costTextField.text = mode == .add ? "" : String(item.cost)
             urlTextField.text = item.url
         case false:
             titleTextField.text = item.name.isEmpty ? "-" : item.name
@@ -145,10 +153,6 @@ class ItemViewController: UIViewController {
             costTextField.text = item.cost == 0 ? "-" : String(item.cost) + "$"
             urlTextField.text = item.url.isEmpty ? "-" : item.url
         }
-        
-        
-//        guard let costString = costTextField.text else { return }
-//        costTextField.text = activate ? (item.cost == 0 ? "" : String(item.cost)) : costString + "$"
     }
     
     
@@ -184,16 +188,18 @@ class ItemViewController: UIViewController {
     @objc private func endEditItemTouch() {
         guard let item = modifiedItem else { return }
         
-        self.item.name = item.name.isEmpty ? self.item.name: item.name
-        self.item.comment = item.comment.isEmpty ? self.item.comment: item.comment
-        self.item.url = item.url.isEmpty ? self.item.url: item.url
-        self.item.cost = item.cost
-        
         switch mode {
         case .add:
-            wishlistManager.addItem(item: item) { (success, message) in
+            wishlistManager.addItem(item: item) { (success, message, item) in
                 DispatchQueue.main.async {
                     if success {
+                        guard let postItem = item else {
+                            let alert = Alert.controller(type: .responseItemError)
+                            self.present(alert, animated: true, completion: nil)
+                            return
+                        }
+                        
+                        self.item = postItem
                         self.mode = .edit
                         self.editMode(false)
                     } else {
@@ -205,9 +211,14 @@ class ItemViewController: UIViewController {
                 print("Add item: \(success)")
             }
         case .edit:
-            wishlistManager.editItem(item: item) { (success, message) in
+            wishlistManager.editItem(item: item) { (success, message, item) in
                 DispatchQueue.main.async {
                     if success {
+                        self.item.name = self.titleTextField.text ?? ""
+                        self.item.cost = Int(self.costTextField.text ?? "") ?? 0
+                        self.item.url = self.urlTextField.text ?? ""
+                        self.item.comment = self.infoTextView.text
+                        
                         self.editMode(false)
                     } else {
                         let alert = Alert.controller(type: .saveError, message: message)

@@ -39,7 +39,7 @@ class WishlistManager: IWishlistManager {
         
         getRequest.request(completion: { (data) in
             guard let data = data else { return }
-            guard let items = self.requestParser.parse(data: data) else { return }
+            guard let items = self.requestParser.parseAll(data: data) else { return }
             
             self.temporaryItemsArray = items
             
@@ -52,18 +52,30 @@ class WishlistManager: IWishlistManager {
         return temporaryItemsArray[index]
     }
     
-    func addItem(item: ItemModel, completion: @escaping (Bool, MessageModel?) -> Void) {
+    func addItem(item: ItemModel, completion: @escaping (Bool, MessageModel?, ItemModel?) -> Void) {
         
-        postRequest.request(model: item) { (success, message) in
-            completion(success, message)
+        postRequest.request(model: item) { (success, message, data) in
+            var item: ItemModel? = nil
+            
+            if let data = data {
+                item = self.requestParser.parse(data: data)
+            }
+            
+            completion(success, message, item)
         }
         
     }
     
-    func editItem(item: ItemModel, completion: @escaping (Bool, MessageModel?) -> Void) {
+    func editItem(item: ItemModel, completion: @escaping (Bool, MessageModel?, ItemModel?) -> Void) {
         
-        putRequest.request(model: item) { (success, message) in
-            completion(success, message)
+        putRequest.request(model: item) { (success, message, data) in
+            var item: ItemModel? = nil
+            
+            if let data = data {                
+                item = self.requestParser.parse(data: data)
+            }
+            
+            completion(success, message, item)
         }
         
     }
@@ -76,6 +88,19 @@ class WishlistManager: IWishlistManager {
         }
         
         deleteRequest.request(model: temporaryItemsArray[index]) { (success) in
+            completion(success)
+        }
+        
+    }
+    
+    func deleteItem(id: Int, completion: @escaping (Bool) -> Void) {
+        
+        guard let item = temporaryItemsArray.filter({ $0.id == id }).first else {
+            completion(false)
+            return
+        }
+        
+        deleteRequest.request(model: item) { (success) in
             completion(success)
         }
         
