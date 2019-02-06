@@ -48,6 +48,12 @@ class WishlistManager: IWishlistManager {
         
     }
     
+    func getItem(id: Int) -> ItemModel? {
+        let item = temporaryItemsArray.filter({ $0.id == id }).first
+        
+        return item
+    }
+    
     func getItem(index: Int) -> ItemModel {
         return temporaryItemsArray[index]
     }
@@ -99,6 +105,8 @@ class WishlistManager: IWishlistManager {
             completion(false)
             return
         }
+        
+        temporaryItemsArray = temporaryItemsArray.filter({ $0.id != id })
         
         deleteRequest.request(model: item) { (success) in
             completion(success)

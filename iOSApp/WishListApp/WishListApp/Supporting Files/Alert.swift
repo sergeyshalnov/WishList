@@ -16,8 +16,9 @@ class Alert {
     enum Message: String {
         case saveError = "Item not saved"
         case deleteError = "Item not delete"
-        case costError = "Field \"cost\" is filled with incorrect data"
+        case costError = "Field \"COST\" is filled with incorrect number"
         case responseItemError = "The save was successful, but no response was received from the server"
+        case selectedItemError = "Item doesn't exist!"
     }
     
     static func controller(type: Alert.Message,

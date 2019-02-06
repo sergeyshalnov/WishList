@@ -23,7 +23,7 @@ class ItemsListViewController: UIViewController {
     private let cellIdentifier = String(describing: ItemCell.self)
     private var itemsCount: Int = 0
     
-    // RefreshControl setup
+    // MARK: - RefreshControl setup
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -108,6 +108,7 @@ class ItemsListViewController: UIViewController {
         navigationController?.pushViewController(itemController, animated: true)
     }
     
+    
     // MARK: - Refresh control function
     
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
@@ -146,8 +147,8 @@ class ItemsListViewController: UIViewController {
         }
     }
 
-
 }
+
 
 // MARK: - UITableViewDelegate extension
 
@@ -156,7 +157,15 @@ extension ItemsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let item = wishlistManager.getItem(index: indexPath.row)
+        guard let itemCell = tableView.cellForRow(at: indexPath) as? ItemCell else { return }
+        guard let itemId = itemCell.id else { return }
+        
+        guard let item = wishlistManager.getItem(id: itemId) else {
+            let alert = Alert.controller(type: .selectedItemError)
+            self.present(alert, animated: true)
+            
+            return
+        }
         let itemController = presentationAssembly.Item(item: item, mode: .edit)
         
         navigationController?.pushViewController(itemController, animated: true)
@@ -200,6 +209,5 @@ extension ItemsListViewController: UITableViewDataSource {
         
         return cell
     }
-    
     
 }

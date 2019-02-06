@@ -27,16 +27,26 @@ class ItemViewController: UIViewController {
     
     // MARK: - Custom TextView placeholder
     
-    private let textViewPlaceholder : UILabel = {
+    private lazy var textViewPlaceholder : UILabel = {
         let label = UILabel()
-        label.text = "Enter information about item"
         
+        label.text = "Enter information about item"
         label.font = UIFont.systemFont(ofSize: 17.0)
         label.sizeToFit()
         label.frame.origin = CGPoint(x: 0, y: 0)
         label.textColor = UIColor.lightGray
         
         return label
+    }()
+    
+    private lazy var editButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editItemTouch))
+        return button
+    }()
+    
+    private lazy var doneButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEditItemTouch))
+        return button
     }()
     
     // MARK: - Private variables
@@ -83,6 +93,10 @@ class ItemViewController: UIViewController {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     
@@ -191,20 +205,20 @@ class ItemViewController: UIViewController {
         switch mode {
         case .add:
             wishlistManager.addItem(item: item) { (success, message, item) in
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     if success {
                         guard let postItem = item else {
                             let alert = Alert.controller(type: .responseItemError)
-                            self.present(alert, animated: true, completion: nil)
+                            self?.present(alert, animated: true, completion: nil)
                             return
                         }
                         
-                        self.item = postItem
-                        self.mode = .edit
-                        self.editMode(false)
+                        self?.item = postItem
+                        self?.mode = .edit
+                        self?.editMode(false)
                     } else {
                         let alert = Alert.controller(type: .saveError, message: message)
-                        self.present(alert, animated: true, completion: nil)
+                        self?.present(alert, animated: true, completion: nil)
                     }
                 }
                 
@@ -212,17 +226,17 @@ class ItemViewController: UIViewController {
             }
         case .edit:
             wishlistManager.editItem(item: item) { (success, message, item) in
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     if success {
-                        self.item.name = self.titleTextField.text ?? ""
-                        self.item.cost = Int(self.costTextField.text ?? "") ?? 0
-                        self.item.url = self.urlTextField.text ?? ""
-                        self.item.comment = self.infoTextView.text
+                        self?.item.name = self?.titleTextField.text ?? ""
+                        self?.item.cost = Int(self?.costTextField.text ?? "") ?? 0
+                        self?.item.url = self?.urlTextField.text ?? ""
+                        self?.item.comment = self?.infoTextView.text ?? ""
                         
-                        self.editMode(false)
+                        self?.editMode(false)
                     } else {
                         let alert = Alert.controller(type: .saveError, message: message)
-                        self.present(alert, animated: true, completion: nil)
+                        self?.present(alert, animated: true, completion: nil)
                     }
                 }
                 
@@ -247,7 +261,7 @@ class ItemViewController: UIViewController {
         guard let urlFlag = urlTextField.text?.isEmpty else { return }
         let inputIsEmpty = infoTextView.text.isEmpty || titleFlag || costFlag || urlFlag
         
-        navigationItem.rightBarButtonItem?.isEnabled = !inputIsEmpty
+        doneButton.isEnabled = !inputIsEmpty
         
         textViewPlaceholder.isHidden = !infoTextView.text.isEmpty
     }
@@ -267,9 +281,6 @@ class ItemViewController: UIViewController {
         costTextField.textColor = color
         infoTextView.textColor = secondaryColor
         urlTextField.textColor = color
-        
-        let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editItemTouch))
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEditItemTouch))
         
         navigationItem.rightBarButtonItem = activate ? doneButton : editButton
         
