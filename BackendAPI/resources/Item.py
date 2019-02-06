@@ -31,10 +31,10 @@ class ItemsResource(Resource):
         if errors:
             return errors, 422
 
-        category = Item.query.filter_by(name=data['name']).first()
+        item = Item.query.filter_by(name=data['name']).first()
 
-        if category:
-            return {'message': 'Item already exists'}, 400
+        if item:
+            return {'message': 'Item with that name already exists'}, 400
 
         item = Item(
             name=json_data['name'], 
@@ -46,7 +46,7 @@ class ItemsResource(Resource):
         db.session.add(item)
         db.session.commit()
 
-        result = item_schema.dump(category).data
+        result = item_schema.dump(item).data
 
         return { "status": 'success', 'data': result }, 201
 
